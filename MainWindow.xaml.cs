@@ -37,8 +37,7 @@ namespace WPFControlSteps
 
         private string studentData = string.Empty;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        public event PropertyChangedEventHandler? PropertyChanged;  //from INotifyPropertyChanged
         public string StudentData
         {
             get
@@ -73,6 +72,7 @@ namespace WPFControlSteps
                 OnPropertyChanged(nameof(EditStudent));
             }
         }
+
         public MainWindow()
         {
             EditStudent = new Student("Subin David", Branch.ComputerScience, Gender.Male);
@@ -127,6 +127,49 @@ namespace WPFControlSteps
             //StudentListView.Items.Add(Students.Last().ToString());  //instead do binding
         }
 
+        Command _addNewStudent;
+        public ICommand AddStudentCommand
+        {
+            get
+            {
+                _addNewStudent ??= new Command(this.AddNewStudent, this.CanAddNewStudent);
+                 return _addNewStudent;
+            }
+        }
+
+        public void AddNewStudent(object parameter)
+        {
+            NewStudent = new Student() { Name=EditStudent.Name, StudentBranch = editStudent.StudentBranch, StudentGender=editStudent.StudentGender };
+            StudentListBox.Items.Add(EditStudent);
+            var name = tbName.Text;
+            var branch = cbBranch.Text;
+            var gender = (bool)rbMale.IsChecked! ? "Male" : "Female";
+
+            //tbInputData.Text = name +" "+branch +" "+gender;  //instead do binding
+            StudentData = branch;
+
+            object? br;
+            object? gen;
+
+            branch = branch.Replace(" ", "");
+
+            Enum.TryParse(typeof(Branch), branch, out br);
+            Enum.TryParse(typeof(Gender), gender, out gen);
+
+            Students.Add(new Student()
+            {
+                Name = name,
+                StudentBranch = (Branch)br,
+                StudentGender = (Gender)gen
+            });
+        }
+
+        public bool CanAddNewStudent(object parameter)
+        {
+            return EditStudent.StudentBranch != Branch.None;
+        }
+
+
         private void StudentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender != null)
@@ -134,6 +177,41 @@ namespace WPFControlSteps
                 ListBox studentListBox = sender as ListBox;
                 tbInputData.Text = studentListBox!.SelectedItem.ToString();
             }
+        }
+    }
+
+    public class Command : ICommand
+    {
+        public readonly Action<object> _execute;
+        public readonly Predicate<object> _canExecute;
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
+        }
+
+        public Command(Action<object> execute) : this(execute, null) { }
+        public Command(Action<object> execute, Predicate<object> canExecute)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return _execute == null || _canExecute(parameter);
+        }
+
+        public void Execute(object? parameter)
+        {
+            _execute(parameter);
         }
     }
 }

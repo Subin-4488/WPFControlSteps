@@ -14,6 +14,7 @@
                 <x:Type Type="local:Branch"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <local:EnumConverter x:Key="EnumConverter1"></local:EnumConverter>
     </Window.Resources>
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
@@ -24,14 +25,14 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="StudentGrid" Grid.Column="0" Grid.Row="0"> 
+        <Grid x:Name="StudentGrid" Grid.Row="0">
             <Label Content="Name" HorizontalAlignment="Left" Margin="17,23,0,0" VerticalAlignment="Top"/>
             <Label Content="Branch" HorizontalAlignment="Left" Margin="17,57,0,0" VerticalAlignment="Top"/>
             <Label Content="Gender" HorizontalAlignment="Left" Margin="17,91,0,0" VerticalAlignment="Top"/>
             <TextBox x:Name="tbName" HorizontalAlignment="Left" Margin="118,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
                 <TextBox.Text>
                     <Binding Path="EditStudent.Name" UpdateSourceTrigger="LostFocus" Mode="TwoWay">
-                        
+
                     </Binding>
                 </TextBox.Text>
             </TextBox>
@@ -41,15 +42,32 @@
             <RadioButton x:Name="rbMale" Content="Male" HorizontalAlignment="Left" Margin="118,0,0,0" VerticalAlignment="Center"/>
             <RadioButton x:Name="rbFemale" Content="Female" HorizontalAlignment="Left" Margin="176,0,0,0" VerticalAlignment="Center"/>
         </Grid>
-        <Button x:Name="AddStudentButton" Content="AddStudent" HorizontalAlignment="Left" Margin="277,150,0,0" VerticalAlignment="Top" Click="AddStudentButton_Click" Height="39" Width="99"/>
+        <Button x:Name="AddStudentButton" Content="AddStudent" HorizontalAlignment="Left" Margin="277,150,0,0" VerticalAlignment="Top" Command="{Binding AddStudentCommand}" Height="39" Width="99"/>
         <Label Grid.Column="1" Content="Input Data" HorizontalAlignment="Left" Margin="30,38,0,0" VerticalAlignment="Top" Height="32" Width="77"/>
-        <TextBox x:Name="tbInputData" Grid.Column="1" HorizontalAlignment="Left" Margin="38,75,0,0" TextWrapping="Wrap" Text="{Binding StudentData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" VerticalAlignment="Top" Height="70" Width="283"/>
+        <TextBox x:Name="tbInputData" Grid.Column="1" HorizontalAlignment="Left" Margin="38,75,0,0" TextWrapping="Wrap" Text="{Binding StudentData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" VerticalAlignment="Top" Height="34" Width="283"/>
+        <TextBlock x:Name="tbNameBlock" Grid.Column="1" HorizontalAlignment="Left" Margin="38,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" Width="283">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="MultiBind: {0} {1} {2}">
+                    <Binding Path="EditStudent.Name">
+
+                    </Binding>
+                    <Binding Path="EditStudent.StudentBranch">
+
+                    </Binding>
+                    <Binding Path="EditStudent.StudentGender">
+
+                    </Binding>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
         <ListBox x:Name="StudentListBox" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="StudentListBox_SelectionChanged"/>
         <ListView x:Name="StudentListView" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path= Students}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="130" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Branch" Width="130" DisplayMemberBinding="{Binding StudentBranch}"/>
+                    <!--<GridViewColumn Header="Branch" Width="130" DisplayMemberBinding="{Binding StudentBranch}"/>-->
+                    <GridViewColumn Header="Branch" Width="130" 
+                                    DisplayMemberBinding="{Binding StudentBranch, Converter={StaticResource EnumConverter1}}"/>
                     <GridViewColumn Header="Gender" Width="130" DisplayMemberBinding="{Binding StudentGender}"/>
                 </GridView>
             </ListView.View>

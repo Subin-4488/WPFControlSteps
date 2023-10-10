@@ -35,6 +35,7 @@ namespace WPFControlSteps
         public Branch StudentBranch { get; set; }
         public Gender StudentGender { get; set; }
 
+
         public override string ToString()
         {
             return $"{Name} {StudentBranch} {StudentGender}";
