@@ -9,12 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <ObjectDataProvider x:Key="Branch" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type Type="local:Branch"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <local:EnumConverter x:Key="EnumConverter1"></local:EnumConverter>
+        <!--If pasted in App.xaml, it is accessible everywhere-->
     </Window.Resources>
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
@@ -25,7 +20,11 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="StudentGrid" Grid.Row="0">
+        <Grid x:Name="StudentGridMain">
+            <local:StudentView x:Name="StudentViewUserControl"></local:StudentView>
+
+        </Grid>
+        <!--<Grid x:Name="StudentGrid" Grid.Row="0">
             <Label Content="Name" HorizontalAlignment="Left" Margin="17,23,0,0" VerticalAlignment="Top"/>
             <Label Content="Branch" HorizontalAlignment="Left" Margin="17,57,0,0" VerticalAlignment="Top"/>
             <Label Content="Gender" HorizontalAlignment="Left" Margin="17,91,0,0" VerticalAlignment="Top"/>
@@ -41,10 +40,10 @@
             </ComboBox>
             <RadioButton x:Name="rbMale" Content="Male" HorizontalAlignment="Left" Margin="118,0,0,0" VerticalAlignment="Center"/>
             <RadioButton x:Name="rbFemale" Content="Female" HorizontalAlignment="Left" Margin="176,0,0,0" VerticalAlignment="Center"/>
-        </Grid>
-        <Button x:Name="AddStudentButton" Content="AddStudent" HorizontalAlignment="Left" Margin="277,150,0,0" VerticalAlignment="Top" Command="{Binding AddStudentCommand}" Height="39" Width="99"/>
-        <Label Grid.Column="1" Content="Input Data" HorizontalAlignment="Left" Margin="30,38,0,0" VerticalAlignment="Top" Height="32" Width="77"/>
-        <TextBox x:Name="tbInputData" Grid.Column="1" HorizontalAlignment="Left" Margin="38,75,0,0" TextWrapping="Wrap" Text="{Binding StudentData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" VerticalAlignment="Top" Height="34" Width="283"/>
+        </Grid>-->
+        <Button Template="{StaticResource RoundedButton}"  x:Name="AddStudentButton" Content="AddStudent" HorizontalAlignment="Left" Margin="277,150,0,0" VerticalAlignment="Top" Command="{Binding AddStudentCommand}" Height="39" Width="99"/>
+        <Label Style="{StaticResource CustomLabel}" Grid.Column="1" Content="Input Data" HorizontalAlignment="Left" Margin="21,23,0,0" VerticalAlignment="Top" Height="50" Width="208"/>
+        <TextBox x:Name="tbInputData" Grid.Column="1" HorizontalAlignment="Left" Margin="38,0,0,0" TextWrapping="Wrap" Text="{Binding StudentData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Height="34" Width="283"/>
         <TextBlock x:Name="tbNameBlock" Grid.Column="1" HorizontalAlignment="Left" Margin="38,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" Width="283">
             <TextBlock.Text>
                 <MultiBinding StringFormat="MultiBind: {0} {1} {2}">
@@ -60,7 +59,7 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
-        <ListBox x:Name="StudentListBox" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="StudentListBox_SelectionChanged"/>
+        <ListBox x:Name="StudentListBox" Grid.Row="1" SelectionChanged="StudentListBox_SelectionChanged"/>
         <ListView x:Name="StudentListView" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path= Students}">
             <ListView.View>
                 <GridView>

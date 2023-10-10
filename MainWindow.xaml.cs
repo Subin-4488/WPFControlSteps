@@ -23,6 +23,11 @@ namespace WPFControlSteps
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+        public TextBox ttbName;
+        public ComboBox ccbBranch;
+        public RadioButton rrbMale;
+
         private ObservableCollection<Student>  students = new ObservableCollection<Student>();
         public ObservableCollection<Student> Students { 
             get => students; 
@@ -80,6 +85,16 @@ namespace WPFControlSteps
   
             //InitBinding();
             DataContext = this;
+
+
+
+            //StudentView studentView = new StudentView();
+            //StudentGridMain.Children.Add(studentView);
+
+            ttbName = StudentViewUserControl.TBName;
+            ccbBranch = StudentViewUserControl.CBBranch;
+            rrbMale = StudentViewUserControl.RBMale;
+            
         }
 
         protected void OnPropertyChanged(string? name = null)
@@ -99,9 +114,9 @@ namespace WPFControlSteps
 
         private void AddStudentButton_Click(object sender, RoutedEventArgs e)
         {
-            var name = tbName.Text;
-            var branch = cbBranch.Text;
-            var gender = (bool)rbMale.IsChecked!?"Male" : "Female";
+            var name = ttbName.Text;
+            var branch = ccbBranch.Text;
+            var gender = (bool)rrbMale.IsChecked!?"Male" : "Female";
 
             //tbInputData.Text = name +" "+branch +" "+gender;  //instead do binding
             StudentData = branch;
@@ -133,17 +148,18 @@ namespace WPFControlSteps
             get
             {
                 _addNewStudent ??= new Command(this.AddNewStudent, this.CanAddNewStudent);
-                 return _addNewStudent;
+                return _addNewStudent;
             }
         }
 
         public void AddNewStudent(object parameter)
         {
-            NewStudent = new Student() { Name=EditStudent.Name, StudentBranch = editStudent.StudentBranch, StudentGender=editStudent.StudentGender };
+            NewStudent = new Student() { Name=EditStudent.Name, StudentBranch = EditStudent.StudentBranch, StudentGender=EditStudent.StudentGender };
+            
             StudentListBox.Items.Add(EditStudent);
-            var name = tbName.Text;
-            var branch = cbBranch.Text;
-            var gender = (bool)rbMale.IsChecked! ? "Male" : "Female";
+            var name = ttbName.Text;
+            var branch = ccbBranch.Text;
+            var gender = (bool)rrbMale.IsChecked! ? "Male" : "Female";
 
             //tbInputData.Text = name +" "+branch +" "+gender;  //instead do binding
             StudentData = branch;
@@ -162,6 +178,7 @@ namespace WPFControlSteps
                 StudentBranch = (Branch)br,
                 StudentGender = (Gender)gen
             });
+
         }
 
         public bool CanAddNewStudent(object parameter)
@@ -177,41 +194,6 @@ namespace WPFControlSteps
                 ListBox studentListBox = sender as ListBox;
                 tbInputData.Text = studentListBox!.SelectedItem.ToString();
             }
-        }
-    }
-
-    public class Command : ICommand
-    {
-        public readonly Action<object> _execute;
-        public readonly Predicate<object> _canExecute;
-
-        public event EventHandler? CanExecuteChanged
-        {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
-        }
-
-        public Command(Action<object> execute) : this(execute, null) { }
-        public Command(Action<object> execute, Predicate<object> canExecute)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object? parameter)
-        {
-            return _execute == null || _canExecute(parameter);
-        }
-
-        public void Execute(object? parameter)
-        {
-            _execute(parameter);
         }
     }
 }
