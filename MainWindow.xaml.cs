@@ -48,20 +48,43 @@ namespace WPFControlSteps
             set
             {
                 studentData = value;
-                Console.WriteLine(studentData);
                 OnPropertyChanged(nameof(StudentData));
+            }
+        }
+
+        Student newStudent;
+        public Student NewStudent
+        {
+            get => newStudent;
+            set
+            {
+                newStudent = value;
+                OnPropertyChanged(nameof(NewStudent));
+            }
+        }
+
+        Student editStudent;
+        public Student EditStudent
+        {
+            get => editStudent;
+            set
+            {
+                editStudent = value;
+                OnPropertyChanged(nameof(EditStudent));
             }
         }
         public MainWindow()
         {
+            EditStudent = new Student("Subin David", Branch.ComputerScience, Gender.Male);
             InitializeComponent();
+  
             //InitBinding();
             DataContext = this;
         }
 
-        protected void OnPropertyChanged([CallerMemberName]string? name = null)
+        protected void OnPropertyChanged(string? name = null)
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         //private void InitBinding()
@@ -88,15 +111,19 @@ namespace WPFControlSteps
 
             branch = branch.Replace(" ", "");
 
-            Enum.TryParse(typeof(Branch), branch, out br);
+            Enum.TryParse(typeof(Branch), branch, out br); 
             Enum.TryParse(typeof(Gender), gender, out gen);
 
             Students.Add(new Student() { 
                 Name = name,
                 StudentBranch = (Branch)br,
                 StudentGender = (Gender)gen });
-            
-            StudentListBox.Items.Add(Students.Last().ToString());
+
+
+            //EditStudent = new Student("Dumm", Branch.None, Gender.Female);  //2 way checking
+
+            StudentListBox.Items.Add(EditStudent);
+            //StudentListBox.Items.Add(Students.Last().ToString());  //instead add using EditStudent
             //StudentListView.Items.Add(Students.Last().ToString());  //instead do binding
         }
 

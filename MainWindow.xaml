@@ -24,15 +24,23 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="17,23,0,0" VerticalAlignment="Top"/>
-        <Label Content="Branch" HorizontalAlignment="Left" Margin="17,57,0,0" VerticalAlignment="Top"/>
-        <Label Content="Gender" HorizontalAlignment="Left" Margin="17,91,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbName" HorizontalAlignment="Left" Margin="118,27,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <ComboBox x:Name="cbBranch" HorizontalAlignment="Left" Margin="118,59,0,0" VerticalAlignment="Top" Width="120" 
-                  ItemsSource="{Binding Source={StaticResource Branch}}" SelectedItem="{Binding Path=branch}">
-        </ComboBox>
-        <RadioButton x:Name="rbMale" Content="Male" HorizontalAlignment="Left" Margin="118,0,0,0" VerticalAlignment="Center"/>
-        <RadioButton x:Name="rbFemale" Content="Female" HorizontalAlignment="Left" Margin="176,0,0,0" VerticalAlignment="Center"/>
+        <Grid x:Name="StudentGrid" Grid.Column="0" Grid.Row="0"> 
+            <Label Content="Name" HorizontalAlignment="Left" Margin="17,23,0,0" VerticalAlignment="Top"/>
+            <Label Content="Branch" HorizontalAlignment="Left" Margin="17,57,0,0" VerticalAlignment="Top"/>
+            <Label Content="Gender" HorizontalAlignment="Left" Margin="17,91,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="tbName" HorizontalAlignment="Left" Margin="118,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+                <TextBox.Text>
+                    <Binding Path="EditStudent.Name" UpdateSourceTrigger="LostFocus" Mode="TwoWay">
+                        
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <ComboBox x:Name="cbBranch" HorizontalAlignment="Left" Margin="118,59,0,0" VerticalAlignment="Top" Width="120" 
+                      ItemsSource="{Binding Source={StaticResource Branch}}" SelectedItem="{Binding Path=EditStudent.StudentBranch}">
+            </ComboBox>
+            <RadioButton x:Name="rbMale" Content="Male" HorizontalAlignment="Left" Margin="118,0,0,0" VerticalAlignment="Center"/>
+            <RadioButton x:Name="rbFemale" Content="Female" HorizontalAlignment="Left" Margin="176,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
         <Button x:Name="AddStudentButton" Content="AddStudent" HorizontalAlignment="Left" Margin="277,150,0,0" VerticalAlignment="Top" Click="AddStudentButton_Click" Height="39" Width="99"/>
         <Label Grid.Column="1" Content="Input Data" HorizontalAlignment="Left" Margin="30,38,0,0" VerticalAlignment="Top" Height="32" Width="77"/>
         <TextBox x:Name="tbInputData" Grid.Column="1" HorizontalAlignment="Left" Margin="38,75,0,0" TextWrapping="Wrap" Text="{Binding StudentData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" VerticalAlignment="Top" Height="70" Width="283"/>

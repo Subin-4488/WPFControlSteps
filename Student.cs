@@ -9,6 +9,7 @@ namespace WPFControlSteps
 {
     public enum Branch
     {
+        None,
         [Description("Computer Science")]
         ComputerScience,
 
@@ -37,6 +38,18 @@ namespace WPFControlSteps
         public override string ToString()
         {
             return $"{Name} {StudentBranch} {StudentGender}";
+        }
+
+        public Student(string name, Branch branch, Gender gender)
+        {
+            Name = name ;
+            StudentBranch = branch ;
+            StudentGender = gender ;
+        }
+
+        public Student()
+        {
+            
         }
 
         //public List<Student> GetStudentList()
