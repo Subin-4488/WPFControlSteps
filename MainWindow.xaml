@@ -10,6 +10,23 @@
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
         <!--If pasted in App.xaml, it is accessible everywhere-->
+        <DataTemplate x:Key="StudentDataTemplate">
+            <Border x:Name="border" BorderBrush="Aqua" BorderThickness="1" Padding="5" Margin="5">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Text="{Binding StudentGender}"></TextBlock>
+                    <TextBlock Text="{Binding StudentBranch}"></TextBlock>
+                </StackPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding StudentBranch}" Value="ComputerScience">
+                    <Setter TargetName="border" Property="BorderBrush" Value="Red"></Setter> 
+                </DataTrigger>
+                <DataTrigger Binding="{Binding StudentBranch}" Value="MechanicalEngineering">
+                    <Setter TargetName="border" Property="BorderBrush" Value="Purple"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </Window.Resources>
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
@@ -59,7 +76,7 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
-        <ListBox x:Name="StudentListBox" Grid.Row="1" SelectionChanged="StudentListBox_SelectionChanged"/>
+        <ListBox ItemTemplate="{StaticResource StudentDataTemplate}" x:Name="StudentListBox" Grid.Row="1" SelectionChanged="StudentListBox_SelectionChanged"/>
         <ListView x:Name="StudentListView" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path= Students}">
             <ListView.View>
                 <GridView>

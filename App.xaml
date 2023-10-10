@@ -28,29 +28,7 @@
             <Setter Property="BorderBrush" Value="#FF000000" ></Setter>
             <Setter Property="Background" Value="Red"></Setter>
         </Style>
-
-        <Style x:Key="TitleText" TargetType="Label">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="FontFamily" Value="Comic Sans MS"></Setter>
-            <Setter Property="FontSize" Value="14"></Setter>
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="MouseEnter">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetProperty="Background.Color" From="Yellow" To="Blue" Duration="0:0:1"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <EventTrigger RoutedEvent="MouseLeave">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetProperty="Background.Color" From="Blue" To="Yellow" Duration="0:0:1"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
-
+        
         <ControlTemplate x:Key="RoundedButton" TargetType="Button">
             <Grid>
                 <Ellipse x:Name="backElement" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding Background}"/>
@@ -62,6 +40,5 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-
     </Application.Resources>
 </Application>
